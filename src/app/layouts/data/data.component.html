@@ -1,0 +1,30 @@
+<div class="header">
+    <div class="header__title">Statistical data on COVID-19 provided by M-Media-Group api</div>
+    <app-button title="Reload" (click)="getData()"></app-button>
+</div>
+<table *ngIf="!isLoading">
+    <tr>
+        <th>Country</th>
+        <th>Confirmed</th>
+        <th>Recovered</th>
+        <th>Deaths</th>
+        <th>Vaccinated (%)</th>
+        <th>New confirmed</th>
+    </tr>
+    <tr *ngFor="let item of data">
+        <td>{{item.country}}</td>
+        <td>{{item.confirmed}}</td>
+        <td>{{item.recovered}}</td>
+        <td>{{item.deaths}}</td>
+        <td [ngClass]="{
+            vaccinated_less: item.people_vaccinated <= 30,
+            vaccinated_medium: item.people_vaccinated > 10 && item.people_vaccinated <= 60,
+            vaccinated_most: item.people_vaccinated > 60
+        }">{{item.people_vaccinated ? (item.people_vaccinated | number: "1.0-2") : "-"}}</td>
+        <td>
+            <div>{{item.new_confirmed}}</div>
+            <small class="date">{{item.date}}</small>
+        </td>
+    </tr>
+</table>
+<app-loader *ngIf="isLoading" text="Data is loading"></app-loader>
